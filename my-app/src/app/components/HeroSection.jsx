@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Truck, RotateCcw, Clock } from "lucide-react"
+import {motion} from 'motion/react'
 
 export default function HeroSection() {
   const [activeSlide, setActiveSlide] = useState(0)
@@ -27,18 +28,22 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative h-[500px] bg-cover bg-center"
-      style={{ backgroundImage: "url('/placeholder.svg?height=500&width=1200')" }}
+      className="relative h-[500px] bg-cover bg-center "
+      style={{ backgroundImage: "url('/images/home-bg.jpg')" }}
     >
       <div className="absolute inset-0 bg-black/50"></div>
 
       <div className="container mx-auto h-full relative z-10 flex flex-col justify-center px-4">
-        <div className="max-w-lg">
-          <h2 className="text-white text-5xl font-bold mb-4">{slides[activeSlide].title}</h2>
-          <p className="text-white/80 mb-8">{slides[activeSlide].description}</p>
-        </div>
+        <motion.div
+        initial={{opacity:0, x:-50}}
+        animate={{opacity:1, x:0}}
+        transition={{duration:0.7}}
+        className="max-w-lg">
+          <h2 className="text-white text-5xl font-bold mb-4 mt-30 mx-20">{slides[activeSlide].title}</h2>
+          <p className="text-white/80 mb-8 mx-20">{slides[activeSlide].description}</p>
+        </motion.div>
 
-        <div className="flex gap-2 mt-auto mb-8">
+        <div className="flex gap-2 mt-auto mb-8 ml-20">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -50,8 +55,8 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 right-0 flex flex-col md:flex-row">
-        <div className="bg-amber-600 text-white p-4 flex items-center gap-3 w-full md:w-auto">
+      <div className="absolute bottom-20 right-20 flex flex-col ">
+        <div className=" text-white p-4 flex items-center gap-3 w-full md:w-auto">
           <Truck size={24} />
           <div>
             <h3 className="font-bold">Free shipping</h3>
@@ -59,7 +64,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="bg-gray-700 text-white p-4 flex items-center gap-3 w-full md:w-auto">
+        <div className=" text-white p-4 flex items-center gap-3 w-full md:w-auto">
           <RotateCcw size={24} />
           <div>
             <h3 className="font-bold">Order return</h3>
@@ -67,7 +72,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="bg-gray-800 text-white p-4 flex items-center gap-3 w-full md:w-auto">
+        <div className=" text-white p-4 flex items-center gap-3 w-full md:w-auto">
           <Clock size={24} />
           <div>
             <h3 className="font-bold">Order online</h3>

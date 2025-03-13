@@ -4,8 +4,8 @@ import WelcomeSection from "@/app/components/WelcomeSection"
 import ProductGrid from "@/app/components/ProductGrid"
 import PromoBanner from "@/app/components/PromoBanner"
 import FeaturedProducts from "@/app/components/FeaturedProducts"
-import SocialMedia from "@/app/components/SocialMedia"
 import Footer from "@/app/components/Footer"
+import AboutUs from "./components/AboutUs"
 
 export default function Home() {
   return (
@@ -16,7 +16,7 @@ export default function Home() {
       <ProductGrid />
       <PromoBanner />
       <FeaturedProducts />
-      <SocialMedia />
+      <AboutUs/>
       <Footer />
     </main>
   )

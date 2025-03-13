@@ -5,29 +5,32 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function FeaturedProducts() {
   const products = [
-    { id: 1, name: "3-HOLE PUNCH SIZE", price: "$9.00", image: "/placeholder.svg?height=200&width=200", tag: "New" },
+    { id: 1, 
+      name: "3-HOLE PUNCH SIZE", 
+      price: "$9.00", 
+      image: "/images/hole-punch.png", 
+      tag: "New" },
     {
       id: 2,
       name: "DELUXE OFFICE INTERCOM DESK",
       price: "$55.00",
-      image: "/placeholder.svg?height=200&width=200",
+      image: "/images/telephone.png",
       tag: "Sale",
     },
     {
       id: 3,
       name: "CUTTING KNIFE 25MM & SPARE",
       price: "$12.00",
-      image: "/placeholder.svg?height=200&width=200",
+      image: "/images/knife.png",
       tag: "Hot",
     },
     {
       id: 4,
       name: "DVD-R SPINDLE 4.7 GB 16X",
       price: "$17.00",
-      image: "/placeholder.svg?height=200&width=200",
-      tag: "New",
+      image: "/images/eraser.png",
+      tag: "New"
     },
-    { id: 5, name: "PREMIUM NOTEBOOK", price: "$22.00", image: "/placeholder.svg?height=200&width=200", tag: "Sale" },
   ]
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -51,7 +54,7 @@ export default function FeaturedProducts() {
   }
 
   return (
-    <section className="px-4 mb-16">
+    <section className="px-4 mb-16 mx-20">
       <div className="container mx-auto">
         <h2 className="text-2xl font-bold text-gray-800 mb-8">FEATURED PRODUCTS:</h2>
 
@@ -76,7 +79,7 @@ export default function FeaturedProducts() {
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
-                    className="w-full h-auto transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-[220px] transition-transform duration-500 group-hover:scale-110"
                   />
 
                   {hoveredProduct === product.id && (
