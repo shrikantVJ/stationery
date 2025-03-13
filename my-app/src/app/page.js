@@ -1,24 +1,14 @@
-import Header from "@/app/components/Header"
-import HeroSection from "@/app/components/HeroSection"
-import WelcomeSection from "@/app/components/WelcomeSection"
-import ProductGrid from "@/app/components/ProductGrid"
-import PromoBanner from "@/app/components/PromoBanner"
-import FeaturedProducts from "@/app/components/FeaturedProducts"
-import SocialMedia from "@/app/components/SocialMedia"
-import Footer from "@/app/components/Footer"
+import React from 'react'
+import LoginPage from './login/page'
+// import Home from '@/app/home/page'
 
-export default function Home() {
+const page = () => {
   return (
-    <main>
-      <Header />
-      <HeroSection />
-      <WelcomeSection />
-      <ProductGrid />
-      <PromoBanner />
-      <FeaturedProducts />
-      <SocialMedia />
-      <Footer />
-    </main>
+    <div>
+     {/* <Home /> */}
+     <LoginPage />
+    </div>
   )
 }
 
+export default page
