@@ -7,11 +7,11 @@ export default function WelcomeSection() {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <section className="py-16 px-4">
+    <section className="py-16 px-4 mx-20">
       <div className="container mx-auto grid md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-4xl font-bold text-gray-800 mb-2">WELCOME</h2>
-          <h3 className="text-xl text-gray-700 mb-6">TO OUR STORE</h3>
+          <h3 className="text-xl text-gray-700 mb-6 font-semibold">TO OUR STORE</h3>
 
           <p className="text-gray-600 mb-4">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
@@ -39,9 +39,7 @@ export default function WelcomeSection() {
 
         <div className="relative">
           <img
-            src="/placeholder.svg?height=300&width=500"
-            alt="Welcome video thumbnail"
-            className="w-full h-full object-cover"
+            style={{ backgroundImage: "url('/images/home-bg.jpg')" }}
           />
           <button className="absolute inset-0 m-auto w-16 h-16 bg-white rounded-full flex items-center justify-center hover:bg-amber-500 transition-colors group">
             <Play size={24} className="text-gray-800 group-hover:text-white transition-colors" />

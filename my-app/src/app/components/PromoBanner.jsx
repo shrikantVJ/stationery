@@ -6,12 +6,12 @@ export default function PromoBanner() {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <section className="px-4 mb-16">
+    <section className="px-4 mb-16 mx-20">
       <div className="container mx-auto">
         <div
           className="bg-gray-100 p-8 flex items-center"
           style={{
-            backgroundImage: "url('/placeholder.svg?height=200&width=1200')",
+            backgroundImage: "url('/images/brush.png')",
             backgroundPosition: "right center",
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
