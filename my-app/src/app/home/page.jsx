@@ -11,6 +11,7 @@ import Sidebar from "../components/Sidebar"
 
 export default function Home() {
   return (
+
     <main className="flex flex-row">
       <div><Sidebar/></div>
       <div>
@@ -24,7 +25,7 @@ export default function Home() {
           <AddressPage/>
           <Footer />
       </div>
-      
+
     </main>
   )
 }

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Eye, EyeOff, X } from "lucide-react"
-import { motion } from "framer-motion"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Eye, EyeOff, X } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
@@ -11,10 +11,11 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
 import { BsApple } from "react-icons/bs";
 
+
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isHovered, setIsHovered] = useState({
     loginButton: false,
     googleButton: false,
@@ -22,28 +23,27 @@ export default function LoginPage() {
     appleButton: false,
     signupLink: false,
     forgotPassword: false,
-  })
+  });
 
   const handleMouseEnter = (item) => {
-    setIsHovered((prev) => ({ ...prev, [item]: true }))
-  }
+    setIsHovered((prev) => ({ ...prev, [item]: true }));
+  };
 
   const handleMouseLeave = (item) => {
-    setIsHovered((prev) => ({ ...prev, [item]: false }))
-  }
+    setIsHovered((prev) => ({ ...prev, [item]: false }));
+  };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
-  const {data:session}=useSession() // backend code
-  const router = useRouter()
-
-  if(session){
-    router.replace('/home')
-    return Null
-  } // backend code
-
+  const { data: session } = useSession(); // backend code
+  const router = useRouter();
+  useEffect(() => {// backend code
+    if (session) {
+      router.replace("/home");
+    } 
+  }, [session, router]); // backend code
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#9fbfc5] p-4">
       <motion.div
@@ -79,9 +79,11 @@ export default function LoginPage() {
               transition={{ delay: 0.4, duration: 0.5 }}
             >
               <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+
                 <h3 className="text-[#9fbfc5] font-bold mb-2">Welcome back!</h3>
                 <p className="text-[#9fbfc5]/90 text-sm">
                   Log in to access your account and explore our premium stationery collection.
+
                 </p>
               </div>
             </motion.div>
@@ -126,7 +128,9 @@ export default function LoginPage() {
                     placeholder="your.email@example.com"
                   />
                   <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                    <span className="text-gray-400">{email.length === 0 && "✉️"}</span>
+                    <span className="text-gray-400">
+                      {email.length === 0 && "✉️"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -157,7 +161,9 @@ export default function LoginPage() {
               <div className="text-right">
                 <Link
                   href="/forgot-password"
+
                   className={`text-sm ${isHovered.forgotPassword ? "text-[#0d4d66]" : "text-[#0d4d66]"} transition-colors`}
+
                   onMouseEnter={() => handleMouseEnter("forgotPassword")}
                   onMouseLeave={() => handleMouseLeave("forgotPassword")}
                 >
@@ -195,17 +201,22 @@ export default function LoginPage() {
               <div className="grid grid-cols-3 gap-4">
                 <motion.button
                   className={`flex justify-center items-center p-3 border rounded-full transition-all ${
-                    isHovered.googleButton ? "border-gray-400 shadow-md transform -translate-y-0.5" : "border-gray-300"
+                    isHovered.googleButton
+                      ? "border-gray-400 shadow-md transform -translate-y-0.5"
+                      : "border-gray-300"
                   }`}
-                  onClick={() =>{ // backend code
-                    signIn("google")
-                }} // backend code
+                  onClick={() => {// backend code
+                    
+                    signIn("google");
+                  }} // backend code
                   onMouseEnter={() => handleMouseEnter("googleButton")}
                   onMouseLeave={() => handleMouseLeave("googleButton")}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
+
                   <span className="text-2xl"><FcGoogle /></span>
+
                 </motion.button>
 
                 <motion.button
@@ -219,20 +230,25 @@ export default function LoginPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
+
                   <span className="text-2xl text-blue-600"><FaFacebook /></span>
+
                 </motion.button>
 
                 <motion.button
                   className={`flex justify-center items-center p-3 border rounded-full transition-all ${
-                    isHovered.appleButton ? "border-gray-400 shadow-md transform -translate-y-0.5" : "border-gray-300"
+                    isHovered.appleButton
+                      ? "border-gray-400 shadow-md transform -translate-y-0.5"
+                      : "border-gray-300"
                   }`}
                   onMouseEnter={() => handleMouseEnter("appleButton")}
                   onMouseLeave={() => handleMouseLeave("appleButton")}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
+
                   <span className="text-2xl"><BsApple /></span>
-                </motion.button>
+
               </div>
             </motion.div>
 
@@ -246,7 +262,9 @@ export default function LoginPage() {
                 Don't have an account?{" "}
                 <Link
                   href="/signup"
+
                   className={`font-medium ${isHovered.signupLink ? "text-sky-900/90" : "text-slate-500"} transition-colors`}
+
                   onMouseEnter={() => handleMouseEnter("signupLink")}
                   onMouseLeave={() => handleMouseLeave("signupLink")}
                 >
@@ -258,6 +276,5 @@ export default function LoginPage() {
         </div>
       </motion.div>
     </div>
-  )
+  );
 }
-
