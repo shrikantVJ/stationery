@@ -28,8 +28,8 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative h-[500px] bg-cover bg-center "
-      style={{ backgroundImage: "url('/images/home-bg.jpg')" }}
+      className="relative h-[500px] bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/home2.png')"}}
     >
       <div className="absolute inset-0 bg-black/50"></div>
 
@@ -39,8 +39,12 @@ export default function HeroSection() {
         animate={{opacity:1, x:0}}
         transition={{duration:0.7}}
         className="max-w-lg">
-          <h2 className="text-white text-5xl font-bold mb-4 mt-30 mx-20">{slides[activeSlide].title}</h2>
-          <p className="text-white/80 mb-8 mx-20">{slides[activeSlide].description}</p>
+          <h2 className=" text-5xl font-bold mb-4 mt-30 mx-20 text-[#9fbfc5]">
+              {slides[activeSlide].title}
+          </h2>
+          <p className="text-white/80 mb-8 mx-20">
+              {slides[activeSlide].description}
+          </p>
         </motion.div>
 
         <div className="flex gap-2 mt-auto mb-8 ml-20">
