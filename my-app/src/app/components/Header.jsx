@@ -27,12 +27,15 @@ export default function Header() {
   return (
     <header className="w-full">
 
-      <div className="bg-zinc-900 text-white py-4 px-4">
+      <div className="fixed w-full z-50 bg-zinc-900/70 backdrop-blur-sm text-white py-3 ">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2 mx-20">
             <h1 className="text-2xl font-light flex flex-row">
               <span className="text-white text-4xl mr-3 "><GiAbstract023 /></span>
-              <span className="block mb-0 font-bold bg-gradient-to-r from-pink-500 to-purple-800 bg-clip-text text-3xl tracking-tight text-transparent">SHRIKANT</span>
+              <span className="flex flex-col mb-0 font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-3xl tracking-tight text-transparent">
+                  Manisha
+                  <span className="text-[15px] text-gray-400 font-medium">stationery</span>
+              </span>
             </h1>
           </div>
 
@@ -58,22 +61,12 @@ export default function Header() {
             </Link>
 
             <Link
-              href="/sale"
-              className={`relative py-2 ${isHovered.sale ? "text-amber-300" : "text-white"}`}
-              onMouseEnter={() => handleMouseEnter("sale")}
-              onMouseLeave={() => handleMouseLeave("sale")}
-            >
-              Sale
-              {isHovered.sale && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-amber-300"></span>}
-            </Link>
-
-            <Link
               href="/about"
               className={`relative py-2 ${isHovered.about ? "text-amber-300" : "text-white"}`}
               onMouseEnter={() => handleMouseEnter("about")}
               onMouseLeave={() => handleMouseLeave("about")}
             >
-              About us
+              About
               {isHovered.about && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-amber-300"></span>}
             </Link>
 
@@ -83,7 +76,7 @@ export default function Header() {
               onMouseEnter={() => handleMouseEnter("contact")}
               onMouseLeave={() => handleMouseLeave("contact")}
             >
-              Contact us
+              Contact
               {isHovered.contact && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-amber-300"></span>}
             </Link>
           </nav>
