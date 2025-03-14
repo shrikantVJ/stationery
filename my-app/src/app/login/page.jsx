@@ -245,7 +245,7 @@ export default function LoginPage() {
                   onMouseLeave={() => handleMouseLeave("appleButton")}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                >
+                />
 
                   <span className="text-2xl"><BsApple /></span>
 
