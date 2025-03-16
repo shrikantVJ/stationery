@@ -1,23 +1,25 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-let isconnected = false;
+let isConnected=false
 
-export const connectToDB = async () => {
-    mongoose.set('strictQuery', true)
+export const connectToDB=async()=>{
+    mongoose.set('strictQuery',true)
 
-    if (isconnected) {
-        console.log('mongo is already connected');
-        return;
-    }
-    try {
-        await mongoose.connect('mongodb://localhost:27017/Raju') 
-
-        isconnected = true;
-        console.log('mongo connected');
+    if(isConnected){
+        console.log("Mongo is already connected")
+        return
     }
 
-    catch (e) {
-        console.log(e);
+    try{
+        await mongoose.connect('mongodb://localhost:27017/NextLoginTut')
+
+        isConnected=true
+        console.log("connected to mongodb")
     }
+    catch(e){
+        console.log(e)
+    }
+
+
 
 }
