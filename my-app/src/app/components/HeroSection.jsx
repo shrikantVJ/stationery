@@ -1,90 +1,92 @@
-"use client"
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { FaShippingFast } from "react-icons/fa";
+import { GiReturnArrow } from "react-icons/gi";
 
-import { useState } from "react"
-import { Truck, RotateCcw, Clock } from "lucide-react"
-import {motion} from 'motion/react'
-
-export default function HeroSection() {
-  const [activeSlide, setActiveSlide] = useState(0)
-
-  const slides = [
-    {
-      title: "ART SUPPLIES PROFESSIONAL SETS",
-      description: "High-quality art supplies for professionals and beginners",
-    },
-    {
-      title: "PREMIUM STATIONERY COLLECTION",
-      description: "Elegant and functional stationery for your everyday needs",
-    },
-    {
-      title: "CREATIVE TOOLS FOR ARTISTS",
-      description: "Unleash your creativity with our premium art tools",
-    },
-  ]
-
-  const handleDotClick = (index) => {
-    setActiveSlide(index)
-  }
-
+const HeroSection = () => {
   return (
-    <section
-      className="relative h-[500px] bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/home2.png')"}}
-    >
-      <div className="absolute inset-0 bg-black/50"></div>
+    <section className="relative flex flex-col md:flex-row items-center justify-center md:justify-between min-h-screen bg-zinc-950 rounded rounded-b-4xl text-white px-6 sm:px-12 md:px-20 gap-6 sm:gap-10 md:gap-16 py-10">
+      {/* Text Content */}
+      <div className="max-w-2xl text-center md:text-left">
+        <motion.h1
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-slate-300 to-slate-500 bg-clip-text tracking-tight text-transparent"
+        >
+          Welcome To Manisha Enterprises
+        </motion.h1>
 
-      <div className="container mx-auto h-full relative z-10 flex flex-col justify-center px-4">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-sm sm:text-base md:text-lg mb-6 text-gray-300"
+        >
+          Curating beautiful stationery for every occasion.
+        </motion.p>
+
         <motion.div
-        initial={{opacity:0, x:-50}}
-        animate={{opacity:1, x:0}}
-        transition={{duration:0.7}}
-        className="max-w-lg">
-          <h2 className=" text-5xl font-bold mb-4 mt-30 mx-20 text-[#9fbfc5]">
-              {slides[activeSlide].title}
-          </h2>
-          <p className="text-white/80 mb-8 mx-20">
-              {slides[activeSlide].description}
-          </p>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="flex justify-center md:justify-start"
+        >
+          <motion.a
+            href="#explore"
+            whileHover={{ scale: 1.05 }}
+            className="inline-block px-5 animate-bounce sm:px-6 py-2.5 sm:py-3 mt-5 bg-purple-700 rounded-lg shadow-lg text-base sm:text-lg font-semibold hover:bg-purple-900 transition"
+          >
+            Explore More
+          </motion.a>
         </motion.div>
 
-        <div className="flex gap-2 mt-auto mb-8 ml-20">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleDotClick(index)}
-              className={`w-3 h-3 rounded-full ${activeSlide === index ? "bg-white" : "bg-white/50"}`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+        {/* Feature Boxes */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="flex flex-col sm:flex-row gap-5 mt-10"
+        >
+          <div className="flex w-full sm:w-[230px] items-center gap-x-4 rounded-xl border border-zinc-800 p-3">
+            <span className="text-2xl ml-2 sm:ml-4">
+              <FaShippingFast />
+            </span>
+            <div>
+              <div className="text-[14px] sm:text-[15px] font-medium text-white">Free Shipping</div>
+              <p className="text-[12px] text-gray-500">ON ORDERS OVER $99</p>
+            </div>
+          </div>
+
+          <div className="flex w-full sm:w-[230px] items-center gap-x-4 rounded-xl border border-zinc-800 p-3">
+            <span className="text-2xl">
+              <GiReturnArrow />
+            </span>
+            <div>
+              <div className="text-[14px] sm:text-[15px] font-medium text-white">Order Return</div>
+              <p className="text-[12px] text-gray-500">RETURN WITHIN 14 DAYS</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
-      <div className="absolute bottom-20 right-20 flex flex-col ">
-        <div className=" text-white p-4 flex items-center gap-3 w-full md:w-auto">
-          <Truck size={24} />
-          <div>
-            <h3 className="font-bold">Free shipping</h3>
-            <p className="text-sm">ON ORDERS OVER $99</p>
-          </div>
-        </div>
-
-        <div className=" text-white p-4 flex items-center gap-3 w-full md:w-auto">
-          <RotateCcw size={24} />
-          <div>
-            <h3 className="font-bold">Order return</h3>
-            <p className="text-sm">RETURN WITHIN 14 DAYS</p>
-          </div>
-        </div>
-
-        <div className=" text-white p-4 flex items-center gap-3 w-full md:w-auto">
-          <Clock size={24} />
-          <div>
-            <h3 className="font-bold">Order online</h3>
-            <p className="text-sm">HOURS: 8AM-11PM</p>
-          </div>
-        </div>
-      </div>
+      {/* Image Section */}
+      <motion.div
+       initial={{ opacity:0, x: 100 }}
+       animate={{ opacity:1, x: 0 }}
+       transition={{
+         type: "spring",
+         stiffness: 500,  // faster movement
+         damping: 10,     // gitter effect
+         mass: 1         // Lower mass makes it more responsive
+       }}
+        className="relative w-full max-w-md"
+      >
+        <img src="images/desk.png" alt="Stationery Desk" className="w-full h-auto object-contain" />
+      </motion.div>
     </section>
-  )
-}
+  );
+};
 
+export default HeroSection;

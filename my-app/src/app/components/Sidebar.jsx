@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { GiSpellBook } from "react-icons/gi";
+import { IoCloseCircleOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 export default function Sidebar() {
@@ -26,15 +28,25 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <motion.div
-        initial={{ x: -250 }}
-        animate={{ x: isOpen ? 0 : -250 }}
+        initial={{ x: -400 }}
+        animate={{ x: isOpen ? 0 : -400 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-18 left-0 h-full w-64 bg-gray-900/50 backdrop-blur-xs text-white shadow-lg p-4 z-50 md:translate-x-0"
+        className="fixed top-0 left-0 h-full w-[400px] bg-gray-900/50 backdrop-blur-xs text-white shadow-lg p-4 z-50 md:translate-x-0"
       >
         {/* Close Button (Mobile) */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Dashboard</h2>
-          <FiX className="md:hidden cursor-pointer text-xl" onClick={() => setIsOpen(false)} />
+        <div className="flex justify-center items-center mb-10">
+          <div className="items-center gap-2">
+              <h1 className="text-2xl font-light flex flex-row items-center border border-gray-400 px-5 rounded-4xl">
+                <span className="text-white text-4xl mr-3 "><GiSpellBook /></span>
+                <span className="flex flex-col mb-0 font-bold text-white">
+                    Manisha
+                    <span className="text-[15px] text-gray-400 font-medium">stationery</span>
+                </span>
+              </h1>
+          </div>
+          <h1 className="relative left-10  md:hidden cursor-pointer text-4xl hover:text-zinc-400" onClick={() => setIsOpen(false)} >
+          <IoCloseCircleOutline />
+          </h1>
         </div>
 
         {/* Sidebar Links */}

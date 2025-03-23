@@ -1,118 +1,81 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import Image from "next/image";
+import { motion } from "framer-motion";
 
-export default function FeaturedProducts() {
-  const products = [
-    { id: 1, 
-      name: "3-HOLE PUNCH SIZE", 
-      price: "$9.00", 
-      image: "/images/hole-punch.png", 
-      tag: "New" },
-    {
-      id: 2,
-      name: "DELUXE OFFICE INTERCOM DESK",
-      price: "$55.00",
-      image: "/images/telephone.png",
-      tag: "Sale",
-    },
-    {
-      id: 3,
-      name: "CUTTING KNIFE 25MM & SPARE",
-      price: "$12.00",
-      image: "/images/knife.png",
-      tag: "Hot",
-    },
-    {
-      id: 4,
-      name: "DVD-R SPINDLE 4.7 GB 16X",
-      price: "$17.00",
-      image: "/images/eraser.png",
-      tag: "New"
-    },
-  ]
+// Product Data
+const products = [
+  {
+    id: 1,
+    image: "/images/book2.png",
+    title: "Luxury Notebook",
+    description: "Premium pages for smooth writing",
+    price: "$14.99",
+  },
+  {
+    id: 2,
+    image: "/images/pen.png",
+    title: "Classic Pen Set",
+    description: "Perfect for professionals & students",
+    price: "$9.99",
+  },
+  {
+    id: 3,
+    image: "/images/sketch.png",
+    title: "Creative Sketchbook",
+    description: "Ideal for artists & designers",
+    price: "$18.49",
+  },
+  {
+    id: 4,
+    image: "/images/desk.png",
+    title: "Desk Organizer",
+    description: "Keep your workspace neat & tidy",
+    price: "$20.99",
+  },
+];
 
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [hoveredProduct, setHoveredProduct] = useState(null)
+// Product Card Component
+const ProductCard = ({ product, delay }) => (
+  <motion.div
+    className="bg-white p-5 rounded-xl hover:shadow-lg border border-gray-200 flex flex-col items-center justify-between h-full duration-300"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1  }}
+    transition={{ duration: 0.5,delay}}
+  >
+    <div className="w-[150px] h-[150px] flex items-center justify-center">
+      <Image src={product.image} width={150} height={150} alt={product.title} className="rounded-lg" />
+    </div>
+    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mt-3">{product.title}</h3>
+    <p className="text-gray-500 text-sm text-center flex-grow">{product.description}</p>
+    <div className="flex flex-col items-center justify-between w-full mt-4">
+      <span className="text-lg mb-2 font-bold text-gray-900">{product.price}</span>
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="bg-purple-400 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-500 transition-all"
+      >
+        Buy Now
+      </motion.button>
+    </div>
+  </motion.div>
+);
 
-  const productsToShow = 4
+// Featured Products Section
+const FeaturedProducts = () => (
+  <section className="min-h-screen w-full bg-gray-50 text-gray-900 py-16 px-4 sm:px-6 md:px-20">
+    <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 mb-12">
+      🌟 Featured Products
+    </h2>
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + productsToShow >= products.length ? 0 : prevIndex + 1))
-  }
+    {/* Responsive Grid Layout */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {products.map((product, index) => (
+        <ProductCard key={product.id} product={product} delay={0.1 * (index + 1)} />
+      ))}
+    </div>
+  </section>
+);
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? products.length - productsToShow : prevIndex - 1))
-  }
-
-  const visibleProducts = products.slice(currentIndex, currentIndex + productsToShow)
-
-  // If we don't have enough products to fill the slider, add from the beginning
-  if (visibleProducts.length < productsToShow) {
-    visibleProducts.push(...products.slice(0, productsToShow - visibleProducts.length))
-  }
-
-  return (
-    <section className="px-4 mb-16 mx-20">
-      <div className="container mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-8">FEATURED PRODUCTS:</h2>
-
-        <div className="relative">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {visibleProducts.map((product) => (
-              <div
-                key={product.id}
-                className="relative"
-                onMouseEnter={() => setHoveredProduct(product.id)}
-                onMouseLeave={() => setHoveredProduct(null)}
-              >
-                <div className="bg-gray-100 p-4 mb-4 relative overflow-hidden group">
-                  <div
-                    className={`absolute top-2 left-2 z-10 text-xs text-white px-2 py-1 ${
-                      product.tag === "New" ? "bg-blue-600" : product.tag === "Sale" ? "bg-red-600" : "bg-amber-600"
-                    }`}
-                  >
-                    {product.tag}
-                  </div>
-
-                  <img
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="w-full h-[220px] transition-transform duration-500 group-hover:scale-110"
-                  />
-
-                  {hoveredProduct === product.id && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="bg-white text-gray-800 px-4 py-2 font-bold hover:bg-amber-500 hover:text-white transition-colors">
-                        QUICK VIEW
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                <h3 className="text-sm font-bold text-gray-800 mb-1">{product.name}</h3>
-                <p className="text-amber-600 font-bold">{product.price}</p>
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors"
-          >
-            <ChevronLeft size={20} />
-          </button>
-
-          <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors"
-          >
-            <ChevronRight size={20} />
-          </button>
-        </div>
-      </div>
-    </section>
-  )
-}
-
+export { ProductCard }; // Named Export
+export default FeaturedProducts; // Default Export
