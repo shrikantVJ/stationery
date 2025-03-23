@@ -9,6 +9,15 @@ import { FaFacebook } from "react-icons/fa6";
 import { BsApple } from "react-icons/bs";
 
 export default function SignupPage() {
+  //backend code
+ const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+console.log("Name:",name);
+
+   //backend code
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -167,8 +176,9 @@ export default function SignupPage() {
                     name="name"
                     type="text"
                     value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-[#9fbfc5] rounded-lg focus:ring-2 focus:ring-[#9fbfc5] focus:border-[#9fbfc5] transition-all outline-none"
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
+
                     placeholder="John Doe"
                   />
                 </div>
@@ -182,8 +192,9 @@ export default function SignupPage() {
                     name="email"
                     type="email"
                     value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-[#9fbfc5] rounded-lg focus:ring-2 focus:ring-[#9fbfc5] focus:border-[#9fbfc5] transition-all outline-none"
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
+
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -225,8 +236,10 @@ export default function SignupPage() {
                       name="password"
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border-[#9fbfc5] rounded-lg focus:ring-2 focus:ring-[#9fbfc5] focus:border-[#9fbfc5] transition-all outline-none"
+
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
+
                       placeholder="••••••••"
                     />
                     <button
@@ -252,8 +265,9 @@ export default function SignupPage() {
                       name="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       value={formData.confirmPassword}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border-[#9fbfc5] rounded-lg focus:ring-2 focus:ring-[#9fbfc5] focus:border-[#9fbfc5] transition-all outline-none"
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
+
                       placeholder="••••••••"
                     />
                     <button
