@@ -5,16 +5,16 @@ import Link from "next/link";
 import { Eye, EyeOff, X } from "lucide-react";
 import { motion } from "framer-motion";
 
-import { signIn, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
 import { BsApple } from "react-icons/bs";
 
-
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isHovered, setIsHovered] = useState({
     loginButton: false,
@@ -38,12 +38,32 @@ export default function LoginPage() {
   };
 
   const { data: session } = useSession(); // backend code
+
   const router = useRouter();
-  useEffect(() => {// backend code
-    if (session) {
-      router.replace("/home");
-    } 
-  }, [session, router]); // backend code
+  useEffect(() => {}, [session, router]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res.error) {
+        setError("Invalid Credentials");
+        return;
+      }
+      if (session) {
+        router.replace("/home");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }; // backend code
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#9fbfc5] p-4">
       <motion.div
@@ -79,11 +99,10 @@ export default function LoginPage() {
               transition={{ delay: 0.4, duration: 0.5 }}
             >
               <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-
                 <h3 className="text-[#9fbfc5] font-bold mb-2">Welcome back!</h3>
                 <p className="text-[#9fbfc5]/90 text-sm">
-                  Log in to access your account and explore our premium stationery collection.
-
+                  Log in to access your account and explore our premium
+                  stationery collection.
                 </p>
               </div>
             </motion.div>
@@ -113,6 +132,7 @@ export default function LoginPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
+              onSubmit={handleSubmit}
             >
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-gray-700">
@@ -158,12 +178,20 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              {error && (
+                <div className="bg-red-500 text-white w-fit test-sm py-1 px-3 rounded-md mt-2">
+                  {error}
+                </div>
+              )}
+
               <div className="text-right">
                 <Link
                   href="/forgot-password"
-
-                  className={`text-sm ${isHovered.forgotPassword ? "text-[#0d4d66]" : "text-[#0d4d66]"} transition-colors`}
-
+                  className={`text-sm ${
+                    isHovered.forgotPassword
+                      ? "text-[#0d4d66]"
+                      : "text-[#0d4d66]"
+                  } transition-colors`}
                   onMouseEnter={() => handleMouseEnter("forgotPassword")}
                   onMouseLeave={() => handleMouseLeave("forgotPassword")}
                 >
@@ -205,8 +233,9 @@ export default function LoginPage() {
                       ? "border-gray-400 shadow-md transform -translate-y-0.5"
                       : "border-gray-300"
                   }`}
-                  onClick={() => {// backend code
-                    
+                  onClick={() => {
+                    // backend code
+
                     signIn("google");
                   }} // backend code
                   onMouseEnter={() => handleMouseEnter("googleButton")}
@@ -214,9 +243,9 @@ export default function LoginPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
-
-                  <span className="text-2xl"><FcGoogle /></span>
-
+                  <span className="text-2xl">
+                    <FcGoogle />
+                  </span>
                 </motion.button>
 
                 <motion.button
@@ -230,9 +259,9 @@ export default function LoginPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
-
-                  <span className="text-2xl text-blue-600"><FaFacebook /></span>
-
+                  <span className="text-2xl text-blue-600">
+                    <FaFacebook />
+                  </span>
                 </motion.button>
 
                 <motion.button
@@ -245,11 +274,10 @@ export default function LoginPage() {
                   onMouseLeave={() => handleMouseLeave("appleButton")}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-
                 />
-                  <span className="text-2xl"><BsApple /></span>
-
-
+                <span className="text-2xl">
+                  <BsApple />
+                </span>
               </div>
             </motion.div>
 
@@ -263,9 +291,9 @@ export default function LoginPage() {
                 Don't have an account?{" "}
                 <Link
                   href="/signup"
-
-                  className={`font-medium ${isHovered.signupLink ? "text-sky-900/90" : "text-slate-500"} transition-colors`}
-
+                  className={`font-medium ${
+                    isHovered.signupLink ? "text-sky-900/90" : "text-slate-500"
+                  } transition-colors`}
                   onMouseEnter={() => handleMouseEnter("signupLink")}
                   onMouseLeave={() => handleMouseLeave("signupLink")}
                 >

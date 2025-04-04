@@ -55,17 +55,13 @@ export default function SignupPage() {
       });
 
       if (res.ok) {
-        setName("");
-        setEmail("");
-        setPassword("");
-        setError("");
-        alert("Signup successful!");
+        const form = e.target;
+        form.reset();
       } else {
-        setError("Error Please fill the form.");
+        console.log("User registration failed");
       }
     } catch (error) {
-      console.error("Error during signup:", error);
-      setError("Something went wrong. Please try again later.");
+      console.log("error during registration", error);
     }
   };
 
