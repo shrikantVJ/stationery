@@ -9,14 +9,14 @@ import AddressPage from "../components/AddressPage"
 import AllCard from "../components/AllCard"
 import Sidebar from "../components/Sidebar"
 
+
 export default function Home() {
   return (
 
-    <main className="flex flex-row">
-      <div><Sidebar/></div>
-      <div>
+    <main className="">
+      <div><Sidebar/>
           <Header />
-          <HeroSection />
+          <HeroSection/>
           <WelcomeSection />
           <ProductGrid />
           <PromoBanner />

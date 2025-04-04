@@ -1,56 +1,88 @@
 "use client"
+import Image from "next/image";
+import { motion } from "framer-motion";
 
-import { useState } from "react"
-import Link from "next/link"
-import { motion } from "motion/react"
-
-export default function ProductGrid() {
-  const products = [
-    { id: 1, name: "Premium Notebook", image: "/images/book.png" },
-    { id: 2, name: "Art Supply Kit", image: "/images/pen.png" },
-    { id: 3, name: "Black Pens Set", image: "/images/duster.png" },
-    { id: 4, name: "Colored Pencil Set", image: "/images/pencil.png" },
-    { id: 5, name: "Art Case", image: "/images/book2.png" },
-    { id: 6, name: "Art Case", image: "/images/staple.png" },
-  ]
-
-  const [hoveredProduct, setHoveredProduct] = useState(null)
-
+export default function DocumentsPage() {
   return (
-    <section className=" px-4 mb-16 mx-20">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <Link
-              href={`/products/${product.id}`}
-              key={product.id}
-              className="block"
-              onMouseEnter={() => setHoveredProduct(product.id)}
-              onMouseLeave={() => setHoveredProduct(null)}
-            >
-              <motion.div
-              initial={{opacity:0}}
-              whileInView={{opacity:1}}
-              transition={{duration:0.5}}
-              className="shadow-md bg-gray-100 p-4 relative overflow-hidde group flex items-center justify-center">
-                <img
-                  src={product.image || "/images/book.png"}
-                  alt={product.name}
-                  className="flex items-center w-[150px] h-[150px] transition-transform duration-500 group-hover:scale-110"
-                />
-                {hoveredProduct === product.id && (
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="bg-white text-gray-800 px-4 py-2 font-bold hover:bg-amber-500 hover:text-white transition-colors">
-                      QUICK VIEW
-                    </button>
-                  </div>
-                )}
-              </motion.div>
-            </Link>
-          ))}
+    <div className="min-h-screen bg-gray-100 mb-10 px-4 sm:px-8">
+      {/* Header */}
+      <header className="text-center text-3xl sm:text-4xl font-bold text-gray-800 pt-16 sm:pt-20">
+        Enterprise Documentation
+      </header>
+
+      {/* Content Wrapper */}
+      <div className="max-w-6xl mx-auto mt-12 sm:mt-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+          {/* Government Cards */}
+          <motion.div
+          whileHover={{ y: -10 }}
+          transition={{ delay: 0.2, duration: 0.2 }}
+          className="flex flex-col items-center rounded-lg p-6 outline outline-transparent transition-all duration-500 hover:outline hover:outline-zinc-900/20
+ ">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Government Cards</h2>
+            <Image 
+              src="/images/gov-card.png" 
+              width={200} 
+              height={200} 
+              alt="Government Cards" 
+              className="rounded-md mb-4" 
+              priority
+            />
+            <p className="text-gray-600 text-sm sm:text-base text-center">
+              All essential government-issued cards in one place.
+            </p>
+            <button className="bg-gray-400 text-white text-[15px] mt-5 rounded-2xl px-5 py-2">
+                Apply now
+            </button>
+          </motion.div>
+
+          {/* Business Documents */}
+          <motion.div
+          whileHover={{ y: -10 }}
+          transition={{ delay: 0.2, duration: 0.2 }}
+          className="flex flex-col items-center rounded-lg p-6 outline outline-transparent transition-all duration-500 hover:outline hover:outline-zinc-900/20
+ ">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Business Documents</h2>
+            <Image 
+              src="/images/gov-docs.png" 
+              width={200} 
+              height={200} 
+              alt="Business Documents" 
+              className="rounded-md mb-4" 
+              priority
+            />
+            <p className="text-gray-600 text-sm sm:text-base text-center">
+              Essential documents for running and managing a business.
+            </p>
+            <button className="bg-gray-400 text-white text-[15px] mt-5 rounded-2xl px-5 py-2">
+                Apply now
+            </button>
+          </motion.div>
+
+          {/* Government Documents */}
+          <motion.div 
+          whileHover={{ y: -10 }}
+          transition={{ delay: 0.2, duration: 0.2 }}
+          className="flex flex-col items-center rounded-lg p-6 outline outline-transparent transition-all duration-500 hover:outline hover:outline-zinc-900/20
+">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Government Documents</h2>
+            <Image 
+              src="/images/business-doc.png" 
+              width={200} 
+              height={200} 
+              alt="Government Documents" 
+              className="rounded-md mb-4" 
+              priority
+            />
+              <p className="text-gray-600 text-sm sm:text-base text-center">
+                Important government records and legal paperwork.
+              </p>
+              <button className="bg-gray-400 text-white text-[15px] mt-5 rounded-2xl px-5 py-2">
+                Apply now
+              </button>
+          </motion.div>
         </div>
       </div>
-    </section>
-  )
+    </div>
+  );
 }
-

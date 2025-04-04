@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/../../models/user";
 import { connectMongoDB } from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
+import { User } from "../../../../../models/user";
 
 const authOptions = {
   providers: [
@@ -17,7 +18,11 @@ const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "example@example.com" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "example@example.com",
+        },
         password: { label: "Password", type: "password" },
       },
 
@@ -38,7 +43,10 @@ const authOptions = {
             throw new Error("Password is missing");
           }
 
-          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
+          const passwordMatch = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
           if (!passwordMatch) {
             throw new Error("Invalid credentials");
           }
