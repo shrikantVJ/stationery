@@ -9,7 +9,6 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-// Ensure the model isn't re-registered on hot reload
 const User = models.User || model("User", UserSchema);
 
 export default User;

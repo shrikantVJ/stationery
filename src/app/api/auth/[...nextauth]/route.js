@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongoDB } from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
-import { User } from "@/../../models/user";
+import User from "@/../models/user"; // ✅ Correct default import
 
 const authOptions = {
   providers: [
@@ -46,6 +46,7 @@ const authOptions = {
             credentials.password,
             user.password
           );
+
           if (!passwordMatch) {
             throw new Error("Invalid credentials");
           }
@@ -85,7 +86,7 @@ const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/",
+    signIn: "/", // your login page
   },
 };
 
