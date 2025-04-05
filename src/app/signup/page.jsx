@@ -7,8 +7,10 @@ import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
 import { BsApple } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+  const router = useRouter();
   //backend code ======================================================
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -57,6 +59,7 @@ export default function SignupPage() {
       if (res.ok) {
         const form = e.target;
         form.reset();
+        router.push("/login"); // <-- Redirect to signin page
       } else {
         console.log("User registration failed");
       }

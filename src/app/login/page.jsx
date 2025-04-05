@@ -236,7 +236,7 @@ export default function LoginPage() {
                   onClick={() => {
                     // backend code
 
-                    signIn("google");
+                    signIn("google"), { callbackUrl: "/home" };
                   }} // backend code
                   onMouseEnter={() => handleMouseEnter("googleButton")}
                   onMouseLeave={() => handleMouseLeave("googleButton")}
@@ -274,11 +274,13 @@ export default function LoginPage() {
                   onMouseLeave={() => handleMouseLeave("appleButton")}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                />
-                <span className="text-2xl">
-                  <BsApple />
-                </span>
+                >
+                  <span className="text-2xl">
+                    <BsApple />
+                  </span>
+                </motion.button>
               </div>
+              
             </motion.div>
 
             <motion.div

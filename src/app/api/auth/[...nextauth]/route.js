@@ -3,17 +3,15 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongoDB } from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
-import User from "@/../models/user"; // ✅ Correct default import
+import User from "@/../models/user"; // double-check path for accuracy
 
 const authOptions = {
   providers: [
-    // Google OAuth Provider
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
 
-    // Credentials Provider (Email & Password)
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -38,20 +36,24 @@ const authOptions = {
             throw new Error("User not found");
           }
 
-          if (!user.password) {
-            throw new Error("Password is missing");
+          if (user.provider && user.provider !== "credentials") {
+            throw new Error(`This account was created using ${user.provider}. Please sign in with that method.`);
           }
 
-          const passwordMatch = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
+          if (!user.password) {
+            throw new Error("Password not set for this account.");
+          }
 
+          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
           if (!passwordMatch) {
             throw new Error("Invalid credentials");
           }
 
-          return user;
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name,
+          };
         } catch (error) {
           console.error("Authorize Error:", error);
           throw new Error(error.message || "Authentication failed");
@@ -59,9 +61,11 @@ const authOptions = {
       },
     }),
   ],
+
   session: {
     strategy: "jwt",
   },
+
   callbacks: {
     async signIn({ account, profile }) {
       if (account.provider === "google") {
@@ -70,8 +74,13 @@ const authOptions = {
           const existingUser = await User.findOne({ email: profile.email });
 
           if (!existingUser) {
-            await User.create({ name: profile.name, email: profile.email });
+            await User.create({
+              name: profile.name,
+              email: profile.email,
+              provider: "google",
+            });
           }
+
           return true;
         } catch (error) {
           console.error("Google SignIn Error:", error);
@@ -80,16 +89,28 @@ const authOptions = {
       }
       return true;
     },
-    async session({ session }) {
+
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.sub;
+      }
       return session;
     },
+
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
   },
+
   secret: process.env.NEXTAUTH_SECRET,
+
   pages: {
-    signIn: "/", // your login page
+    signIn: "/", // your custom sign-in route
   },
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };
