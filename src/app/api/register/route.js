@@ -1,47 +1,48 @@
-// app/api/register/route.js
-import { connectMongoDB } from "@/lib/mongodb";
-import User from "@../../../models/user"; // Adjust the path as necessary
-import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { connectMongoDB } from "@/lib/mongodb";
+import User from "@/../models/user";
 
 export async function POST(req) {
   try {
-    const { username, email, password } = await req.json();
+    const { name, email, password } = await req.json();
 
-    if (!username || !email || !password) {
+    // Validate incoming data
+    if (!name || !email || !password) {
       return NextResponse.json(
-        { message: "Missing required fields" },
+        { message: "All fields are required" },
         { status: 400 }
       );
     }
 
     await connectMongoDB();
 
-    const userExists = await User.findOne({ email });
-
-    if (userExists) {
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return NextResponse.json(
-        { message: "User already exists" },
+        { message: "User already exists. Please log in." },
         { status: 409 }
       );
     }
 
+    // Hash password and create user
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    await User.create({
-      username,
+    const user = await User.create({
+      name,
       email,
       password: hashedPassword,
+      provider: "credentials", // for tracking the signup method
     });
 
     return NextResponse.json(
-      { message: "User registered successfully" },
+      { message: "User registered successfully", userId: user._id },
       { status: 201 }
     );
   } catch (error) {
-    console.error("Registration Error:", error);
+    console.error("❌ Registration error:", error);
     return NextResponse.json(
-      { message: "An error occurred during registration" },
+      { message: error.message || "Something went wrong" },
       { status: 500 }
     );
   }

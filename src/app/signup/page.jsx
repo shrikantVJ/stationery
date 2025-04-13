@@ -4,24 +4,93 @@ import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, X, Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa6";
+import { BsApple } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
   const router = useRouter();
+  //backend code ======================================================
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name || !email || !password) {
+      // || !confirmPassword
+      setError("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const resUserExits = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const { user } = await resUserExits.json();
+
+      if (user) {
+        setError("User already exists");
+        return;
+      }
+
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          // confirmPassword,
+        }),
+      });
+
+      if (res.ok) {
+        const form = e.target;
+        form.reset();
+        router.push("/login"); // <-- Redirect to signin page
+      } else {
+        console.log("User registration failed");
+      }
+    } catch (error) {
+      console.log("error during registration", error);
+    }
+  };
+
+  // console.log("Name:", name);
+  // console.log("Email:", email);
+  // console.log("Password:", password);
+  // console.log("Confirm Password:", confirmPassword);
+
+  //backend code ======================================================
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    // confirmPassword: "",
   });
-
-  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-
   const [isHovered, setIsHovered] = useState({
     nextButton: false,
     backButton: false,
+    createButton: false,
+    googleButton: false,
+    facebookButton: false,
+    appleButton: false,
+    loginLink: false,
   });
 
   const handleMouseEnter = (item) => {
@@ -41,59 +110,16 @@ export default function SignupPage() {
     setShowPassword(!showPassword);
   };
 
+  // const toggleConfirmPasswordVisibility = () => {
+  //   setShowConfirmPassword(!showConfirmPassword);
+  // };
+
   const nextStep = () => {
-    if (!formData.name || !formData.email) {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    // Optional email validation
-    const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
-    if (!isValidEmail(formData.email)) {
-      setError("Enter a valid email address");
-      return;
-    }
-
-    setError("");
     setCurrentStep(2);
   };
 
   const prevStep = () => {
     setCurrentStep(1);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.password) {
-      setError("Please enter a password");
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.status === 201) {
-        // Success
-        setTimeout(() => {
-          router.push("/login");
-        }, 1000);
-      } else {
-        setError(data.message || "Registration failed");
-      }
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
-    }
   };
 
   const containerVariants = {
@@ -116,11 +142,12 @@ export default function SignupPage() {
         animate="visible"
       >
         <div className="flex flex-col md:flex-row">
-          {/* Left Side */}
+          {/* Left side with illustration */}
           <div className="md:w-1/2 bg-[#0d4d66] p-8 relative">
             <Link href="/" className="text-[#9fbfc5] font-bold text-xl">
               Stationery.
             </Link>
+
             <motion.div
               className="mt-12"
               initial={{ opacity: 0, y: 20 }}
@@ -133,6 +160,7 @@ export default function SignupPage() {
                 className="w-full max-w-xs mx-auto"
               />
             </motion.div>
+
             <motion.div
               className="absolute bottom-8 left-8 right-8"
               initial={{ opacity: 0 }}
@@ -151,7 +179,7 @@ export default function SignupPage() {
             </motion.div>
           </div>
 
-          {/* Right Side */}
+          {/* Right side with form */}
           <div className="md:w-1/2 p-8 md:p-12">
             <div className="flex justify-between items-center mb-8">
               <motion.h2
@@ -162,14 +190,14 @@ export default function SignupPage() {
               >
                 Sign Up
               </motion.h2>
+
               <Link href="/">
-                <button className="text-gray-500 hover:text-gray-800">
+                <button className="text-gray-500 hover:text-gray-800 transition-colors">
                   <X size={24} />
                 </button>
               </Link>
             </div>
 
-            {/* Step Indicators */}
             <div className="mb-8">
               <div className="flex items-center">
                 <div
@@ -202,14 +230,6 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Error message */}
-            {error && (
-              <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
-                {error}
-              </div>
-            )}
-
-            {/* Step 1 */}
             {currentStep === 1 && (
               <motion.form
                 className="space-y-6"
@@ -217,9 +237,10 @@ export default function SignupPage() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
+                onSubmit={handleSubmit} //backend code
               >
-                <div>
-                  <label htmlFor="name" className="block text-gray-700 mb-1">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="block text-gray-700">
                     Full Name
                   </label>
                   <input
@@ -227,14 +248,18 @@ export default function SignupPage() {
                     name="name"
                     type="text"
                     value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg"
-                    placeholder="Enter your name"
+                    onChange={(e) => {
+                      //backend code
+                      setName(e.target.value);
+                      handleChange(e);
+                    }}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
+                    placeholder="Name"
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-gray-700 mb-1">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-gray-700">
                     Email
                   </label>
                   <input
@@ -242,8 +267,12 @@ export default function SignupPage() {
                     name="email"
                     type="email"
                     value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg"
+                    onChange={(e) => {
+                      //backend code
+                      setEmail(e.target.value);
+                      handleChange(e);
+                    }}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -254,8 +283,8 @@ export default function SignupPage() {
                     onClick={nextStep}
                     className={`px-6 py-3 rounded-lg font-medium text-white transition-all ${
                       isHovered.nextButton
-                        ? "bg-sky-900/90 shadow-lg transform -translate-y-0.5"
-                        : "bg-sky-900/90 shadow-lg"
+                        ? "bg-sky-900/90 shadow-lg shadow-slate-400 transform -translate-y-0.5"
+                        : "bg-sky-900/90 shadow-lg shadow-slate-400"
                     }`}
                     onMouseEnter={() => handleMouseEnter("nextButton")}
                     onMouseLeave={() => handleMouseLeave("nextButton")}
@@ -267,21 +296,17 @@ export default function SignupPage() {
               </motion.form>
             )}
 
-            {/* Step 2 */}
             {currentStep === 2 && (
               <motion.form
-                onSubmit={handleSubmit}
                 className="space-y-6"
                 variants={formVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
+                onSubmit={handleSubmit} //backend code
               >
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-gray-700 mb-1"
-                  >
+                <div className="space-y-2">
+                  <label htmlFor="password" className="block text-gray-700">
                     Password
                   </label>
                   <div className="relative">
@@ -290,38 +315,184 @@ export default function SignupPage() {
                       name="password"
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border rounded-lg"
-                      placeholder="Enter a strong password"
+                      onChange={(e) => {
+                        //backend code
+                        setPassword(e.target.value);
+                        handleChange(e);
+                      }}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
+                      placeholder="••••••••"
                     />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                       onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-800 transition-colors"
                     >
-                      {showPassword ? <EyeOff /> : <Eye />}
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                   </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Password must be at least 8 characters long with a number
+                    and a special character.
+                  </p>
                 </div>
+                {/* 
+                <div className="space-y-2">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-gray-700"
+                  >
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={formData.confirmPassword}
+                      onChange={(e) => {
+                        //backend code
+                        setConfirmPassword(e.target.value);
+                        handleChange(e);
+                      }}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-pink-500 transition-all outline-none"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleConfirmPasswordVisibility}
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-800 transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
+                  </div>
+                </div> */}
+                {error && (
+                  <div className="bg-red-500 text-white w-fit test-sm py-1 px-3 rounded-md mt-2">
+                    {error}
+                  </div>
+                )}
 
                 <div className="flex justify-between">
                   <motion.button
                     type="button"
                     onClick={prevStep}
-                    className="px-6 py-3 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
+                    className={`px-6 py-3 rounded-lg font-medium border transition-all ${
+                      isHovered.backButton
+                        ? "shadow-slate-400 bg-slate-100 text-sky-900/90 transform -translate-y-0.5"
+                        : "shadow-slate-400 bg-white text-gray-700"
+                    }`}
+                    onMouseEnter={() => handleMouseEnter("backButton")}
+                    onMouseLeave={() => handleMouseLeave("backButton")}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Back
                   </motion.button>
 
                   <motion.button
                     type="submit"
-                    className="px-6 py-3 rounded-lg bg-[#0d4d66] text-white hover:bg-[#08384a]"
+                    className={`px-6 py-3 rounded-lg font-medium text-white transition-all ${
+                      isHovered.createButton
+                        ? "bg-sky-900/90 shadow-lg shadow-slate-400 transform -translate-y-0.5"
+                        : "bg-sky-900/90 shadow-lg shadow-slate-400"
+                    }`}
+                    onMouseEnter={() => handleMouseEnter("createButton")}
+                    onMouseLeave={() => handleMouseLeave("createButton")}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Create Account
                   </motion.button>
                 </div>
               </motion.form>
             )}
+
+            <motion.div
+              className="mt-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <div className="h-px bg-gray-300 flex-1"></div>
+                <span className="text-gray-500 text-sm">Or Sign Up With</span>
+                <div className="h-px bg-gray-300 flex-1"></div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <motion.button
+                  className={`flex justify-center items-center p-3 border rounded-full transition-all ${
+                    isHovered.googleButton
+                      ? "border-gray-400 shadow-md transform -translate-y-0.5"
+                      : "border-gray-300"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("googleButton")}
+                  onMouseLeave={() => handleMouseLeave("googleButton")}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="text-2xl">
+                    <FcGoogle />
+                  </span>
+                </motion.button>
+
+                <motion.button
+                  className={`flex justify-center items-center p-3 border rounded-full transition-all ${
+                    isHovered.facebookButton
+                      ? "border-gray-400 shadow-md transform -translate-y-0.5"
+                      : "border-gray-300"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("facebookButton")}
+                  onMouseLeave={() => handleMouseLeave("facebookButton")}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="text-2xl text-blue-600">
+                    <FaFacebook />
+                  </span>
+                </motion.button>
+
+                <motion.button
+                  className={`flex justify-center items-center p-3 border rounded-full transition-all ${
+                    isHovered.appleButton
+                      ? "border-gray-400 shadow-md transform -translate-y-0.5"
+                      : "border-gray-300"
+                  }`}
+                  onMouseEnter={() => handleMouseEnter("appleButton")}
+                  onMouseLeave={() => handleMouseLeave("appleButton")}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="text-2xl">
+                    <BsApple />
+                  </span>
+                </motion.button>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="mt-8 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+            >
+              <p className="text-gray-600">
+                i have an account?{" "}
+                <Link
+                  href="/login"
+                  className={`font-medium ${
+                    isHovered.signupLink ? "text-sky-900/90" : "text-slate-00"
+                  } transition-colors`}
+                  onMouseEnter={() => handleMouseEnter("signupLink")}
+                  onMouseLeave={() => handleMouseLeave("signupLink")}
+                >
+                  Sign In here
+                </Link>
+              </p>
+            </motion.div>
           </div>
         </div>
       </motion.div>
