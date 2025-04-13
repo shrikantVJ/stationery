@@ -110,6 +110,14 @@ const authOptions = {
   pages: {
     signIn: "/login", // your custom sign-in route
   },
+  
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allow only internal redirects
+      if (url.startsWith(baseUrl)) return url;
+      return baseUrl + '/home'; // Fallback if callbackUrl is missing
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
