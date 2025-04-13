@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose";  // Ensure this import is at the top
 
 export const connectMongoDB = async () => {
   try {
@@ -9,8 +9,8 @@ export const connectMongoDB = async () => {
 
     await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "yourDatabaseName",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useNewUrlParser: true,  // Remove these options if you're using MongoDB driver >= 4.0
+      useUnifiedTopology: true,  // Remove these options if you're using MongoDB driver >= 4.0
     });
 
     console.log("✅ Connected to MongoDB");
