@@ -123,6 +123,7 @@ const authOptions = {
       return baseUrl + "/home"; // Fallback if callbackUrl is missing
     },
   },
+
 };
 
 const handler = NextAuth(authOptions);

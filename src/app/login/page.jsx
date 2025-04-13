@@ -214,10 +214,10 @@ export default function LoginPage() {
                   }`}
                   onClick={() => {
                     // backend code
-
                     signIn("google", {
                       callbackUrl: `${window.location.origin}/home`,
                     });
+
                   }} // backend code
                   onMouseEnter={() => handleMouseEnter("googleButton")}
                   onMouseLeave={() => handleMouseLeave("googleButton")}
