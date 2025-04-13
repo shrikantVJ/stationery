@@ -37,14 +37,19 @@ const authOptions = {
           }
 
           if (user.provider && user.provider !== "credentials") {
-            throw new Error(`This account was created using ${user.provider}. Please sign in with that method.`);
+            throw new Error(
+              `This account was created using ${user.provider}. Please sign in with that method.`
+            );
           }
 
           if (!user.password) {
             throw new Error("Password not set for this account.");
           }
 
-          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
+          const passwordMatch = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
           if (!passwordMatch) {
             throw new Error("Invalid credentials");
           }
@@ -110,12 +115,12 @@ const authOptions = {
   pages: {
     signIn: "/login", // your custom sign-in route
   },
-  
+
   callbacks: {
     async redirect({ url, baseUrl }) {
       // Allow only internal redirects
       if (url.startsWith(baseUrl)) return url;
-      return baseUrl + '/home'; // Fallback if callbackUrl is missing
+      return baseUrl + "/home"; // Fallback if callbackUrl is missing
     },
   },
 };

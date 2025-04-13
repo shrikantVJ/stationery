@@ -1,48 +1,46 @@
-import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { connectMongoDB } from "@/lib/mongodb";
-import User from "@/../models/user";
+import User from "@/models/user";
+import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { name, email, password } = await req.json();
+    const { username, email, password } = await req.json();
 
-    // Validate incoming data
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       return NextResponse.json(
-        { message: "All fields are required" },
+        { message: "Missing required fields" },
         { status: 400 }
       );
     }
 
     await connectMongoDB();
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
       return NextResponse.json(
-        { message: "User already exists. Please log in." },
+        { message: "User already exists" },
         { status: 409 }
       );
     }
 
-    // Hash password and create user
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      name,
+
+    await User.create({
+      username,
       email,
       password: hashedPassword,
-      provider: "credentials", // for tracking the signup method
     });
 
     return NextResponse.json(
-      { message: "User registered successfully", userId: user._id },
+      { message: "User registered successfully" },
       { status: 201 }
     );
   } catch (error) {
-    console.error("❌ Registration error:", error);
+    console.error("Registration Error:", error);
     return NextResponse.json(
-      { message: error.message || "Something went wrong" },
+      { message: "An error occurred during registration" },
       { status: 500 }
     );
   }

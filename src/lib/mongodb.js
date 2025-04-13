@@ -8,7 +8,7 @@ export const connectMongoDB = async () => {
     }
 
     await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: "yourDatabaseName",
+      dbName: "stationeryapp",
       useNewUrlParser: true,  // Remove these options if you're using MongoDB driver >= 4.0
       useUnifiedTopology: true,  // Remove these options if you're using MongoDB driver >= 4.0
     });
