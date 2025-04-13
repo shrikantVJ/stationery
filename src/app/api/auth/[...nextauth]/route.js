@@ -108,7 +108,7 @@ const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   pages: {
-    signIn: "/", // your custom sign-in route
+    signIn: "/login", // your custom sign-in route
   },
 };
 
