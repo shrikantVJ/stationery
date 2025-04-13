@@ -1,5 +1,6 @@
+// app/api/register/route.js
 import { connectMongoDB } from "@/lib/mongodb";
-import User from "@../../../models/user";
+import User from "@/models/user";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 

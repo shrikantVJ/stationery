@@ -46,6 +46,14 @@ export default function SignupPage() {
       setError("Please fill in all fields");
       return;
     }
+
+    // Optional email validation
+    const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+    if (!isValidEmail(formData.email)) {
+      setError("Enter a valid email address");
+      return;
+    }
+
     setError("");
     setCurrentStep(2);
   };
@@ -56,36 +64,32 @@ export default function SignupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.password) {
       setError("Please enter a password");
       return;
     }
 
     try {
-      // Check if user exists
-      const resUserExists = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email }),
-      });
-
-      const { user } = await resUserExists.json();
-      if (user) {
-        setError("User already exists");
-        return;
-      }
-
-      // Register new user
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
-      if (res.ok) {
-        router.push("/login");
+      const data = await res.json();
+
+      if (res.status === 201) {
+        // Success
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
       } else {
-        setError("Registration failed");
+        setError(data.message || "Registration failed");
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
