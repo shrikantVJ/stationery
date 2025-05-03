@@ -60,7 +60,7 @@ export default function LoginPage() {
         router.replace("/home");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }; // backend code
 
@@ -119,12 +119,6 @@ export default function LoginPage() {
               >
                 Login
               </motion.h2>
-
-              <Link href="/">
-                <button className="text-gray-500 hover:text-gray-800 transition-colors">
-                  <X size={24} />
-                </button>
-              </Link>
             </div>
 
             <motion.form
@@ -184,21 +178,6 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <div className="text-right">
-                <Link
-                  href="/forgot-password"
-                  className={`text-sm ${
-                    isHovered.forgotPassword
-                      ? "text-[#0d4d66]"
-                      : "text-[#0d4d66]"
-                  } transition-colors`}
-                  onMouseEnter={() => handleMouseEnter("forgotPassword")}
-                  onMouseLeave={() => handleMouseLeave("forgotPassword")}
-                >
-                  Forgot Password?
-                </Link>
-              </div>
-
               <motion.button
                 type="submit"
                 className={`w-full py-3 rounded-lg font-medium text-white transition-all ${
@@ -236,7 +215,9 @@ export default function LoginPage() {
                   onClick={() => {
                     // backend code
 
-                    signIn('google', { callbackUrl: `${window.location.origin}/home` });
+                    signIn("google", {
+                      callbackUrl: `${window.location.origin}/home`,
+                    });
                   }} // backend code
                   onMouseEnter={() => handleMouseEnter("googleButton")}
                   onMouseLeave={() => handleMouseLeave("googleButton")}
@@ -280,7 +261,6 @@ export default function LoginPage() {
                   </span>
                 </motion.button>
               </div>
-              
             </motion.div>
 
             <motion.div
